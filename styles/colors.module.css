@@ -1,0 +1,54 @@
+.yellow {
+  color: #FFEF92;
+}
+
+.purple {
+  color: #443347;
+}
+
+.onyx {
+  color: #37393A;
+  /* background-color: rgb(55, 57, 58) */
+}
+
+.onyxBg {
+  background-color: #37393A;
+  /* background-color: rgb(55, 57, 58) */
+}
+
+.deepPurp {
+  color:#332e3c;
+  /* color: hsl(261, 13%, 21%); */
+  /* background-color: rgb(32, 21, 35, .3236); */
+}
+
+.lightPurple { 
+  color: #4344B0;
+  /* rgba(67, 68, 176, .3236) */
+}
+
+.lightPurpleBg { 
+  background-color: #4344B0;
+  /* rgba(67, 68, 176, .3236) */
+}
+
+.grey {
+  color: #a1a3a5;
+  /* background-color: rgba(161, 163, 165, .1618); */
+  /* border-bottom: 1px solid rgba(161, 163, 165, .3236); */
+}
+
+.platinum {
+  color: #E8E9ED
+}
+
+/* #B8B8FF; */
+
+/* ivory: #fffff3 */
+
+/* purple2 #704678 */
+
+/* const graphColors = [
+  "#4344B0", "#b5179e", "#4cc9f0", "#7209b7", "#4cc9f0",
+] */
+

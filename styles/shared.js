@@ -1,0 +1,1 @@
+export const centerCol = 'flex flex-col w-full h-full justify-center items-center'
