@@ -1,7 +1,8 @@
 
 export const defaultImage = "/images/logo.png"
 
-export const sideNavGradient = 'linear-gradient(to bottom, rgba(109,30,129,1) 0%,rgba(29,30,37,0.88) 100%)'
+export const sideNavGradient = 'linear-gradient(0deg, rgba(36,193,150,.64) 0%, rgba(53,164,141,1) 7%, rgba(68,138,133,1) 23%, rgba(80,117,127,1) 33%, rgba(93,96,121,.94) 50%)'
+
 
 export const seperator = 'border border-div-grey'
 

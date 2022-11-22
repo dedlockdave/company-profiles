@@ -4,7 +4,8 @@ import { useSession } from 'next-auth/react'
 import { LayoutContext } from '../../contexts/LayoutContext'
 import LoginModal from './LoginModal'
 import ProfilePicSettings from '../profileV2/ProfilePicSettings'
-import Button from '@mui/material/Button'
+import Button from '../button/Btn'
+
 
 
 
@@ -24,8 +25,11 @@ const Login = () => {
 
 	return (
 		<>
-			<Button onClick={() => setLayoutContext({...layout, isLoginModalOpen: true})}>
-				Login
+			<Button 
+				className='text-white'
+				variant="contained"
+				onClick={() => setLayoutContext({...layout, isLoginModalOpen: true})}>
+					Login
 			</Button>
 			<LoginModal />
 		</>
