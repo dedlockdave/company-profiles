@@ -12,7 +12,7 @@ export function callbackURLSignIn() {
      } else if (process.env.NEXT_PUBLIC_PLUMENV == "staging") {
          return `https://crm-staging.plum.club/connect`
      } else {
-         return`http://localhost:3000/connect`
+         return`http://localhost:3000/`
      }
 }
 // http://localhost:3000/projects/callback/discord

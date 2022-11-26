@@ -8,10 +8,14 @@ import Login from "../../login/UserConnect"
 import { useScreenSize } from "../../../utils/effects"
 import NavMobile from "./MobileNav"
 import { LayoutContext } from "../../../contexts/LayoutContext"
+import { useMobileNav } from "../../../usecases/useLayout"
 
 export default function Nav() {
     let screen = useScreenSize() 
-    let [{isMobileNavOpen}, setLayoutContext] = useContext(LayoutContext)
+    let {
+        closeMobileNav
+    } = useMobileNav()
+    
     if (screen == "small" || screen == "super-small") {
         return (
             <div className='flex justify-between items-center m-3'>
@@ -31,7 +35,7 @@ export default function Nav() {
                 </NavMobile>
             <div className="flex justify-end space-x-3">
                 {/* <Image src={'/images/icon_search.svg'} height={21} width={21} /> */}
-                <div onClick={() => isMobileNavOpen && setLayoutContext({isMobileNavOpen: false})}>
+                <div onClick={closeMobileNav}>
                     <Login />
                 </div>
             </div>
@@ -67,7 +71,7 @@ export function HomeBrandIcon() {
         h=50;w=34
     }
 
-    let app = "Demo"
+    let app = "HabitHub"
 
     // let {pathname} = useRouter()
     // switch (pathname.split("/")[1]) {

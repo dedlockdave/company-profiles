@@ -3,17 +3,17 @@ import { useContext } from "react"
 import { createPortal } from "react-dom"
 import LoginOpts from './LoginOpts'
 import ModalAnimated from '../modalanimated/ModalAnimated'
-import Loader from "../Loader"
+import Loader from "../general/Loader"
 import { LayoutContext } from "../../contexts/LayoutContext"
 import { UserContext } from "../../contexts/UserContext"
+import { useLoginModal } from "../../usecases/useLayout"
 
 export default function LoginModal() {
-    let [{isLoginModalOpen}, setLayoutContext] = useContext(LayoutContext)
-    let [{userLoggingIn}] = useContext(UserContext)
-
-    function closeModal() {
-        isLoginModalOpen && setLayoutContext({isLoginModalOpen: false})
-    }
+    let {
+        isLoginModalOpen,
+        userLoggingIn,
+        closeModal
+    } = useLoginModal()
 
     let m = (
         isLoginModalOpen && 

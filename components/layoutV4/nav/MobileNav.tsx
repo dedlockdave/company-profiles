@@ -5,27 +5,25 @@ import { sideNavGradient } from '../../../utils/consts'
 import { sideBarAnimation } from '../../../styles/animations'
 import { outsideTrigger } from '../../../utils/effects'
 import { LayoutContext } from '../../../contexts/LayoutContext'
+import { useMobileNav } from '../../../usecases/useLayout'
 
 
-export default function NavMobile({children}) {
-  let [{isMobileNavOpen}, setLayoutContext] = useContext(LayoutContext)
+export default function NavMobile({children}: any) {
+  let {
+    outsideRef,
+    toggleMenu,
+    isMobileNavOpen
+  } = useMobileNav()
 
-  let ref = outsideTrigger(() => {
-    isMobileNavOpen && setLayoutContext({isMobileNavOpen: false})
-  })
-
-  const toggleMenu = () => {
-    setLayoutContext({isMobileNavOpen: !isMobileNavOpen})
-  }
 
   return (
-    <div className='' ref={ref}>
+    <div ref={outsideRef}>
       <AnimatePresence>
         {isMobileNavOpen &&
           <motion.div
             // ref={ref}
             style={{background: sideNavGradient}}
-            className={" absolute bottom-0 left-0 h-[100vh] z-40"}
+            className={" absolute bottom-0 left-0 min-h-[100vh] z-40"}
             // onClick={() => setSideShowing(false)}
             {...sideBarAnimation}
           >            

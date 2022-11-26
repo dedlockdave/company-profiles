@@ -13,22 +13,23 @@ window.addEventListener('unhandledrejection', event => {
 
 function getTags(route) {
   let tags = {}
-  if (route.includes("track")) {
-    tags.title = "Track crypto and NFTs | Plum"
-    tags.description = 'the Number #1 crypto tools aggregator. Compare Twitter followers, Instagram followers etc. for your crypto assets. Calculate Impermanent Loss'
+  tags.title = "Revamp Your Life"
+  tags.description = 'Codifying Science backed research on changing the way you think and live'
+  
+  // if (route.includes("track")) {
     
-  } else if (route.includes("playlist")) {
-    tags.title = "Learn Crypto and NFTs for Beginners | Crypto Made Easy | Plum"
-    tags.description = 'A step-by-step beginner friendly crypto and NFT course. Watch our short videos explained. How to avoid crypto scams.'
-  } else if (route.includes("talks")) {
-    tags.title = "Discuss and Talk Crypto | Questions and Answers Crypto | Plum"
-    tags.description  = 'A social network platform to ask questions and gain quality answers on anything Crypto related'
-  } else {
-    tags.title = "Nurture and Grow your Community"
-    tags.description = 'The best crypto CRM. Know and hear your community' 
-  }
+  // } else if (route.includes("playlist")) {
+  //   tags.title = "Learn Crypto and NFTs for Beginners | Crypto Made Easy | Plum"
+  //   tags.description = 'A step-by-step beginner friendly crypto and NFT course. Watch our short videos explained. How to avoid crypto scams.'
+  // } else if (route.includes("talks")) {
+  //   tags.title = "Discuss and Talk Crypto | Questions and Answers Crypto | Plum"
+  //   tags.description  = 'A social network platform to ask questions and gain quality answers on anything Crypto related'
+  // } else {
+  //   tags.title = "Nurture and Grow your Community"
+  //   tags.description = 'The best crypto CRM. Know and hear your community' 
+  // }
 
-  tags.image="https://plum.club/images/logo.png"
+  // tags.image="https://plum.club/images/logo.png"
   return tags
 }
 

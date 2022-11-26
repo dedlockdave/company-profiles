@@ -4,6 +4,7 @@ import TwitterProvider from 'next-auth/providers/twitter'
 import DiscordProvider from "next-auth/providers/discord"
 
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) =>
 NextAuth(req, res, {
   providers: [
@@ -30,7 +31,7 @@ NextAuth(req, res, {
       // Allows callback URLs on the same origin
 
 
-      else if (new URL(url).origin === baseUrl) return `${baseUrl}/connect`
+      else if (new URL(url).origin === baseUrl) return `${baseUrl}`
       return baseUrl
     },
     // async jwt({ token, account }) {

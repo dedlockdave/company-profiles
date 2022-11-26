@@ -3,41 +3,47 @@ import "@fontsource/roboto/300.css"
 import "@fontsource/roboto/400.css"
 import "@fontsource/roboto/500.css"
 import "@fontsource/roboto/700.css"
-import { AppProps } from "next/app"
-/* eslint-disable no-undef */
-import { useRouter } from "next/router"
 
-import { SessionProvider } from "next-auth/react"
-import "react-toastify/dist/ReactToastify.css"
+// import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
+// import { useEffect, useState, createContext } from "react"
+// import { useRouter } from "next/router"
+// import {supabase} from '../utils/supabase'
+// import Index from "../components/layoutV4/Index"
+
+import { Session } from "@supabase/auth-helpers-react"
+import { ThemeProvider } from "@emotion/react"
+import { createTheme, TypeText } from "@mui/material/styles"
+import { AppProps } from "next/app"
+
+/* eslint-disable no-undef */
+
+import { LayoutProvider } from "../contexts/LayoutContext"
+import { UserProvider } from "../contexts/UserContext"
+import { SessionProvider } from "../contexts/SessionContext"
+
 
 import ErrorBoundary from "../components/errboundary"
 
-import Notification from "../components/Notification"
-
 import LayoutV4 from "../components/layoutV4/Layout"
-import Index from "../components/layoutV4/Index"
-import { LayoutProvider } from "../contexts/LayoutContext"
-import { UserProvider } from "../contexts/UserContext"
-import { ThemeProvider } from "@emotion/react"
-import { createTheme } from "@mui/material/styles"
+import { CommitmentsProvider } from "../contexts/CommitmentsContext"
 
-export default function App({ Component, pageProps }: AppProps) {
-    const theme = createTheme({
-        status: {
-            danger: "#e53e3e",
-        },
-        palette: {
-            primary: {
-                main: "#24C196",
-                darker: "#053e85",
-            },
-            neutral: {
-                main: "#64748B",
-                contrastText: "#fff",
-            },
-        },
-    })
-    let { asPath } = useRouter()
+
+
+export default function App({
+    Component,
+    pageProps,
+}: AppProps<{
+    initialSession: Session
+}>) {
+
+    // console.log(session)
+    // let { asPath } = useRouter()
+    // const [supabaseClient] = useState(() =>
+    //     createBrowserSupabaseClient<Database>()
+    // )
+    // console.log("sss", supabase)
+
+    
 
     let Layout = LayoutV4
     // if (asPath == "/") {
@@ -48,48 +54,70 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <>
-            <ThemeProvider {...{theme}}>
-                <UserProvider>
-                    <LayoutProvider>
-                        <Notification />
-                        <SessionProvider session={pageProps.session}>
+            <SessionProvider>
+                <ThemeProvider {...{ theme }}>
+                    <UserProvider>
+                        <CommitmentsProvider>
+                        <LayoutProvider>
                             <ErrorBoundary>
                                 <Layout>
                                     <Component {...pageProps} />
                                 </Layout>
                             </ErrorBoundary>
-                        </SessionProvider>
-                    </LayoutProvider>
-                </UserProvider>
-            </ThemeProvider>
+                        </LayoutProvider>
+                        </CommitmentsProvider>
+                    </UserProvider>
+                </ThemeProvider>
+            </SessionProvider>
         </>
     )
 }
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
     interface Theme {
-      status: {
-        danger: React.CSSProperties['color'];
-      };
+        status: {
+            danger: React.CSSProperties["color"]
+        }
     }
-  
+
     interface Palette {
-      neutral: Palette['primary'];
+        neutral: Palette["primary"]
     }
     interface PaletteOptions {
-      neutral: PaletteOptions['primary'];
+        neutral: PaletteOptions["primary"]
     }
-  
+
     interface PaletteColor {
-      darker?: string;
+        darker?: string
     }
     interface SimplePaletteColorOptions {
-      darker?: string;
+        darker?: string
     }
     interface ThemeOptions {
-      status: {
-        danger: React.CSSProperties['color'];
-      };
+        status: {
+            danger: React.CSSProperties["color"]
+        }
     }
-  }
-  
+}
+
+
+const theme = createTheme({
+    // typography: {
+    //     allVariants: {
+    //         color: 
+    //     }
+    // },
+    status: {
+        danger: "#e53e3e",
+    },
+    palette: {
+        primary: {
+            main: "#24C196",
+            darker: "#053e85",
+        },
+        neutral: {
+            main: "#64748B",
+            contrastText: "#fff",
+        },
+    },
+})
