@@ -93,8 +93,8 @@ export function HomeBrandIcon() {
     )
 }
 
-const getClass = (currentPath, href) => currentPath !="" && href.includes(currentPath) ? "font-extrabold text-sm rounded-3xl py-2 px-6 bg-plum-purple text-sm " : "text-sm flex flex-col justify-center hover:opacity-60"
-function NavItem({url, name, match}) {
+const getClass = (currentPath : string, href : string) => currentPath !="" && href.includes(currentPath) ? "font-extrabold text-sm rounded-3xl py-2 px-6 bg-plum-purple text-sm " : "text-sm flex flex-col justify-center hover:opacity-60"
+function NavItem({url, name, match} : any) {
     let {pathname} = useRouter()
     let basePath = pathname.split("/")[1]
     return (<Link href={url}><span className={getClass(basePath, match)}>{name}</span></Link>)

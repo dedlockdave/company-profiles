@@ -31,20 +31,21 @@ const Backdrop = ({ isOpen, children, onClick }) => {
     let ref = useRef(null)
     let screenSize = useScreenSize()
 
-    const handleClickOutside = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-            onClick()
-        }
-    }
-
+    
     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                onClick()
+            }
+        }
+
         document.addEventListener("click", handleClickOutside, true)
         document.addEventListener("scroll", () => onClick())
         return () => {
             document.removeEventListener("click", handleClickOutside, true)
             document.removeEventListener("scroll", () => onClick())
         }
-    }, [])
+    }, [onClick, ref])
 
     if (!isOpen) return null
 
