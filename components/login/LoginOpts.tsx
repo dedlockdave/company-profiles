@@ -14,7 +14,7 @@ export default function LoginOpts() {
                 {/* <LoginOption loginType="Twitter" /> */}
                 <Auth
                     view="sign_up"
-                    providers={["facebook"]}
+                    providers={["google","facebook"]}
                     supabaseClient={supabase}
                     appearance={{ 
                         theme: ThemeSupa ,

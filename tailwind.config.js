@@ -11,7 +11,7 @@ module.exports = {
           'div1': '#3B3D46',
           'div2': '#23242D',
           'card2': '#4A4E69',
-          'card3': '#008A64',
+          'card3': '#298683',
           'card4': "#747687",
           'demph': '#CBCEEE',
           'demph2': '#A8AABC',

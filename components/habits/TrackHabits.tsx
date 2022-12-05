@@ -21,7 +21,7 @@ export function MarkCompletion() {
                 </Link>
             </div>
             <div className="space-y-6">
-                <h3 className="text-center text-demph m-0">
+                <h3 className="text-center m-0">
                     {moment().format("MMM Do YY")}
                 </h3>
                 <HabitsList {...{ habits, handleToggleSet }} />
