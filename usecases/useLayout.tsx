@@ -1,8 +1,10 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { LayoutContext } from "../contexts/LayoutContext"
 import { outsideTrigger } from "../utils/effects"
 
 export function useLoginModal() {
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+
     let ctx = useContext(LayoutContext)
     let {layout, setLayout} = ctx!
 
@@ -10,15 +12,20 @@ export function useLoginModal() {
         layout.isLoginModalOpen && setLayout({...layout, isLoginModalOpen: false})
     }
 
-    const openLoginModal = () => {
-        setLayout({...layout, isLoginModalOpen: true})
-    }
+    const openLoginModal = () => setLayout({...layout, isLoginModalOpen: true})
+
+    const openPopover = () => setIsPopoverOpen(true)
+    const closePopover = () => setIsPopoverOpen(false)
 
     return {
         isLoginModalOpen: layout.isLoginModalOpen,
         userLoggingIn: layout.userLoggingIn,
         closeModal,
-        openLoginModal
+        openLoginModal,
+
+        isPopoverOpen,
+        openPopover,
+        closePopover
     }
 }
 

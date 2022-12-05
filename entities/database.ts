@@ -11,19 +11,19 @@ export interface Database {
     Tables: {
       user_abstains: {
         Row: {
-          created_at: string
+          created_time: string
           name: string
           cheat_days: number
           id: string
         }
         Insert: {
-          created_at?: string
+          created_time?: string
           name: string
           cheat_days?: number
           id?: string
         }
         Update: {
-          created_at?: string
+          created_time?: string
           name?: string
           cheat_days?: number
           id?: string
@@ -31,21 +31,21 @@ export interface Database {
       }
       user_activities: {
         Row: {
-          created_at: string | null
+          created_time: string | null
           name: string
           days: Json | null
           id: string | null
           user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_time?: string | null
           name: string
           days?: Json | null
           id?: string | null
           user_id: string
         }
         Update: {
-          created_at?: string | null
+          created_time?: string | null
           name?: string
           days?: Json | null
           id?: string | null
@@ -54,7 +54,7 @@ export interface Database {
       }
       user_consumes: {
         Row: {
-          created_at: string
+          created_time: string
           name: string
           amount: number
           unit: string | null
@@ -63,7 +63,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
-          created_at?: string
+          created_time?: string
           name: string
           amount: number
           unit?: string | null
@@ -72,7 +72,7 @@ export interface Database {
           user_id: string
         }
         Update: {
-          created_at?: string
+          created_time?: string
           name?: string
           amount?: number
           unit?: string | null

@@ -3,7 +3,7 @@ import "@fontsource/roboto/300.css"
 import "@fontsource/roboto/400.css"
 import "@fontsource/roboto/500.css"
 import "@fontsource/roboto/700.css"
-
+import Script from "next/script"
 // import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 // import { useEffect, useState, createContext } from "react"
 // import { useRouter } from "next/router"
@@ -21,13 +21,10 @@ import { LayoutProvider } from "../contexts/LayoutContext"
 import { UserProvider } from "../contexts/UserContext"
 import { SessionProvider } from "../contexts/SessionContext"
 
-
 import ErrorBoundary from "../components/errboundary"
 
 import LayoutV4 from "../components/layoutV4/Layout"
 import { CommitmentsProvider } from "../contexts/CommitmentsContext"
-
-
 
 export default function App({
     Component,
@@ -35,16 +32,6 @@ export default function App({
 }: AppProps<{
     initialSession: Session
 }>) {
-
-    // console.log(session)
-    // let { asPath } = useRouter()
-    // const [supabaseClient] = useState(() =>
-    //     createBrowserSupabaseClient<Database>()
-    // )
-    // console.log("sss", supabase)
-
-    
-
     let Layout = LayoutV4
     // if (asPath == "/") {
     //     Layout = Index
@@ -58,17 +45,40 @@ export default function App({
                 <ThemeProvider {...{ theme }}>
                     <UserProvider>
                         <CommitmentsProvider>
-                        <LayoutProvider>
-                            <ErrorBoundary>
-                                <Layout>
-                                    <Component {...pageProps} />
-                                </Layout>
-                            </ErrorBoundary>
-                        </LayoutProvider>
+                            <LayoutProvider>
+                                <ErrorBoundary>
+                                    <Layout>
+                                        <Component {...pageProps} />
+                                    </Layout>
+                                </ErrorBoundary>
+                            </LayoutProvider>
                         </CommitmentsProvider>
                     </UserProvider>
                 </ThemeProvider>
             </SessionProvider>
+            <Script id="scriptmeupfuk" strategy="lazyOnload">
+                {`
+                                    window.fbAsyncInit = function() {
+                                      FB.init({
+                                        appId      : '{your-app-id}',
+                                        cookie     : true,
+                                        xfbml      : true,
+                                        version    : '{api-version}'
+                                      });
+                                        
+                                      FB.AppEvents.logPageView();   
+                                        
+                                    };
+                                  
+                                    (function(d, s, id){
+                                       var js, fjs = d.getElementsByTagName(s)[0];
+                                       if (d.getElementById(id)) {return;}
+                                       js = d.createElement(s); js.id = id;
+                                       js.src = "https://connect.facebook.net/en_US/sdk.js";
+                                       fjs.parentNode.insertBefore(js, fjs);
+                                     }(document, 'script', 'facebook-jssdk'));
+                                `}
+            </Script>
         </>
     )
 }
@@ -100,11 +110,10 @@ declare module "@mui/material/styles" {
     }
 }
 
-
 const theme = createTheme({
     // typography: {
     //     allVariants: {
-    //         color: 
+    //         color:
     //     }
     // },
     status: {

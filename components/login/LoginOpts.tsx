@@ -11,9 +11,10 @@ export default function LoginOpts() {
                 Log In to Start
             </h1>
             <div className="space-y-3 px-8">
+                {/* <LoginOption loginType="Twitter" /> */}
                 <Auth
                     view="sign_up"
-                    // providers={["twitter"]}
+                    providers={["facebook"]}
                     supabaseClient={supabase}
                     appearance={{ 
                         theme: ThemeSupa ,
@@ -28,10 +29,10 @@ export default function LoginOpts() {
                             },
                           },
                     }}
-                    
+                            
                 />
                 {/* <LoginOption loginType="Google" />
-        <LoginOption loginType="Twitter" /> */}
+         */}
                 {/* <LoginOption loginType="Discord" /> */}
                 {/* <LoginOption loginType="Twitter" /> */}
             </div>
@@ -39,11 +40,27 @@ export default function LoginOpts() {
     )
 }
 
+async function signUp(providerId: string) {
+    supabase.auth.signInWithSSO({options: {redirectTo: "http://localhost:3000"}, providerId})
+
+    // const { error } = await supabase.auth.signIn(
+        
+    // );
+    // if (error) {
+    //     alert(error.message);
+    // }
+}
+
 function LoginOption({ loginType }: any) {
     const handleSignIn = async (loginType: any) => {
-        const { error } = await supabase.auth.signInWithOAuth({
+        supabase.auth.signInWithOAuth({
             provider: loginType.toLowerCase(),
+            // options: {redirectTo: "http://localhost:3000"}
         })
+        const { error } = await supabase.auth.signInWithOAuth(
+            {
+            provider: loginType.toLowerCase(),
+            })
 
         if (error) {
             console.log({ error })

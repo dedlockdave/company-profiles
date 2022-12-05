@@ -7,7 +7,6 @@ export function useHomePage() {
     let user = GetUser()
     let {layout, setLayout} = useContext(LayoutContext)!
     useEffect(() => {
-
         if (!user?.userID) {
             if (!layout.isLoginModalOpen) {
                 setLayout({
@@ -27,7 +26,6 @@ export function useHomePage() {
     }
 
     if (!user.activities.length) {
-        console.log("user act", user.activities)
         return {
             goToEdit: true
         }

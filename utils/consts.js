@@ -3,6 +3,7 @@ export const defaultImage = "/images/logo.png"
 
 export const sideNavGradient = 'linear-gradient(0deg, rgba(36,193,150,.64) 0%, rgba(53,164,141,1) 7%, rgba(68,138,133,1) 23%, rgba(80,117,127,1) 33%, rgba(93,96,121,.94) 50%)'
 
+export const accordionColor = "#6B4648"
 
 export const seperator = 'border border-div-grey'
 

@@ -1,8 +1,6 @@
 import moment from "moment"
 import { useEffect, useState } from "react"
-import { GetUser } from "../contexts/UserContext"
-import { getUserCommitments } from "../entities/Activity"
-import { Activity } from "../entities/Activity"
+import { Activity, fetchUserActivities } from "../entities/Activity"
 import { ActivityEntry, getActivityEntries } from "../entities/ActivityEntry"
 
 
@@ -11,8 +9,7 @@ export function UserActivities(userID : string){
 
     useEffect(() => {
         async function fetchActivities() {
-            let c =  await getUserCommitments(userID)
-            console.log("fetched ",c)
+            let c =  await fetchUserActivities(userID)
             setActivities(c)
         }
         if (userID) {
@@ -32,7 +29,6 @@ export function UserActivitiesEntries(userID : string, createdTime : moment.Mome
     useEffect(() => {
         async function fetchActivities() {
             let c =  await getActivityEntries(userID, createdTime)
-            console.log("fetched ",c)
             setActivitiesEntries(c)
         }
         if (userID && createdTime) {

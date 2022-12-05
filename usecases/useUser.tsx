@@ -1,5 +1,7 @@
 import { GetSession } from "../contexts/SessionContext"
 import { GetUser } from "../contexts/UserContext"
+import { supabase } from "../utils/supabase"
+supabase
 
 
 // function GetUserSession() {
@@ -12,9 +14,13 @@ export function useUserConnect() {
     let isLoggedIn = session?.user.role == "authenticated"
     let userName = session?.user.email
 
+    const handleLogout = () => supabase.auth.signOut()
+
     return {
         isLoggedIn,
         userName,
+        profileImage: "/images/seed.svg",
+        handleLogout
     }
 }
 

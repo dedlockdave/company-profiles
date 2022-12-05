@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { getUserCommitments } from "../entities/Activity"
+import { fetchUserActivities } from "../entities/Activity"
 import { User } from "../entities/User"
 
 import { GetSession } from "./SessionContext"
@@ -13,7 +13,7 @@ export function UserProvider({children}: any) {
     useEffect(() => {
         async function setupUser() {
             let uid = session!.user.id
-            let activities = await getUserCommitments(uid)
+            let activities = await fetchUserActivities(uid)
             setUser(new User({
                 userID: uid,
                 activities
