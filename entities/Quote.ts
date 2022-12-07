@@ -1,6 +1,8 @@
 import moment from 'moment';
 import {v4 as uuidv4} from 'uuid';
 import { supabase } from '../utils/supabase';
+
+// @ts-ignore
 import {prng_alea} from 'esm-seedrandom';
 
 

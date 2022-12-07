@@ -1,15 +1,9 @@
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Snackbar,
 } from "@mui/material"
-import ExpandMore from "@mui/icons-material/ExpandMore"
 import Link from "next/link"
 import { useNotification } from "../usecases/useEditActivities"
 import MainArea4 from "../components/layoutV4/MainArea4"
-import { accordionColor } from "../utils/consts"
-import { HabitAccordionHeader, HabitAccordionBody, AbstainsAccordionHeader, AbstainsAccordionBody } from "../components/habits/EditHabits"
 import { HabitAccordion } from "../components/accordions/Habits"
 import { AbstainsAccordion } from "../components/accordions/Abstains"
 

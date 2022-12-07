@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { GetUser, RefreshUser, RefreshUserFunc } from "../contexts/UserContext"
+import { GetUser,  RefreshUserFunc } from "../contexts/UserContext"
 import { deleteUserActivity, upsertUserActivity } from "../entities/Activity"
 import {sleep} from '../utils/utils'
 
