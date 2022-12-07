@@ -5,15 +5,17 @@ import MainArea4 from "../components/layoutV4/MainArea4"
 import { useHomePage } from "../usecases/useHomePage"
 import { MarkCompletion } from "../components/habits/TrackHabits"
 import Link from "next/link"
+import { Quote } from "../entities/Quote"
 
 export default function Home() {
     let router = useRouter()
-    let { goToEdit } = useHomePage()
+    let { goToEdit, quote } = useHomePage()
     useEffect(() => {
         if (goToEdit) {
             router.replace("/edit")
         }
     }, [goToEdit, router])
+
 
     return (
         <MainArea4>
@@ -28,9 +30,24 @@ export default function Home() {
                     {moment().format("MMM Do YY")}
                 </h3>
 
+                <HeaderQuote quote={quote!} />
+
             </div>
             <MarkCompletion />
         </MainArea4>
     )
 }
 
+function HeaderQuote({quote}:any) {
+    if(!quote) return null
+    console.log(quote)
+    return(
+        <div className="text-center text-demph">
+            <blockquote className="italic">
+                {quote.quote}
+                <br/>
+                -{quote.author}
+            </blockquote>
+        </div>
+    )
+}

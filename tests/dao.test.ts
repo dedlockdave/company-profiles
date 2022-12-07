@@ -5,6 +5,7 @@ import { Activity, upsertUserActivity, fetchUserActivities } from '../entities/A
 import { ActivityEntry, createEntry, getSuccessReport, insertUserActivityEntries } from '../entities/ActivityEntry';
 import { isRelevant } from '../utils/date';
 import {v4 as uuidv4} from 'uuid';
+import { getQuote, getQuoteSeed, insertQuotes, Quote } from '../entities/Quote';
 
 const uid = 'd2b790a3-dc85-4aa1-8a8c-4e425eeb1c1a'
 
@@ -45,10 +46,10 @@ test('integration', async () => {
   }
 })
 
-test('successReport', async () => {
-  let data = await getSuccessReport(uid)
-  console.log(data)
-  
+test('quotes', async () => {
+  let data = await getQuoteSeed()
+  let quotes = data.map((d: any) => new Quote({quote: d.q, author: d.a}))
+  insertQuotes(quotes)
 })
 
 

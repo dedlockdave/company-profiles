@@ -44,17 +44,6 @@ export default function EditForm() {
                         {notification?.message}
                     </p>
                 </div>
-                {/* <Alert
-                    onClose={closeNotification}
-                    severity={notification?.severity as AlertColor}
-                    sx={{ 
-                        width: "100%" ,
-                        backgroundColor: "#4A4E69",
-                        color: "white"
-                    }}
-                >
-                    
-                </Alert> */}
             </Snackbar>
         </MainArea4>
     )

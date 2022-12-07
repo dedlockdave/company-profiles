@@ -34,7 +34,7 @@ type EntryCardProps = {
 function HabitsList({ habits, handleToggleSet }: any) {
     return (
         <>
-            <div className="space-x-4 text-demph text-center w-full">
+            <div className="space-x-4 text-center w-full">
                 <div className="flex justify-center">
                     <TaskAltIcon sx={{ color: "#24C196" }} />
                     <p className="m-0 p-0">To Do List</p>
@@ -102,7 +102,6 @@ function HabitEntry({ card, onToggle, ...motionProps }: any) {
 
 function AbstainEntry({ card, onToggle, ...motionProps }: any) {
     let { entry, report } = card
-    console.log(report)
 
     let rows, bgColor, switchLabelColor, fontColor, label, height
     switchLabelColor = "#A8AABC"
@@ -146,7 +145,7 @@ function AbstainEntry({ card, onToggle, ...motionProps }: any) {
 function AbstainList({ abstains, handleToggleSet }: any) {
     return (
         <>
-            <div className="space-x-4 text-demph text-center w-full">
+            <div className="space-x-4 text-center w-full">
                 <div className="flex justify-center">
                     <DoNotDisturbTwoToneIcon sx={{ color: "#9F7678" }} />
                     <p className="m-0 p-0">Abstain List</p>
@@ -171,7 +170,6 @@ function AbstainList({ abstains, handleToggleSet }: any) {
 }
 
 function SuccessReport({ report }: any) {
-    console.log(report)
     if(!report?.data.length) return (
         <p className="text-sm text-demph2 text-center">
             Historical data will show up here

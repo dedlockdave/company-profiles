@@ -14,3 +14,4 @@ create table
             user_activities_id
         )
     );
+    

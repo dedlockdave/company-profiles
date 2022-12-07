@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { GetUser } from "../contexts/UserContext"
+import { GetUser, RefreshUser, RefreshUserFunc } from "../contexts/UserContext"
 import { deleteUserActivity, upsertUserActivity } from "../entities/Activity"
 import {sleep} from '../utils/utils'
 
@@ -23,6 +23,7 @@ export function activitiyProvider() {
 export function useEditHabits() {
     let user = GetUser()
     let [habits, setHabits] = useState<Activity[]>()
+    let refreshUser = RefreshUserFunc()
 
     useEffect(() => {
         setHabits(user?.activities.filter((a: Activity) => a.activity_type == "habit"))
@@ -33,6 +34,7 @@ export function useEditHabits() {
         newHabit.activity_type = "habit"
         let a = [newHabit]
         if (habits?.length) a.push(...habits)
+        
         setHabits(a)
     } 
 
@@ -58,6 +60,7 @@ export function useEditHabits() {
     const handleSave = async (savehabits : Activity[]) => {
         try {
             if (savehabits) await upsertUserActivity(savehabits)
+            refreshUser()
             // openNotification("Activity saved", "success")
         } catch (error) {
             let m = `something went wrong : ${error}`
@@ -95,6 +98,8 @@ export function useEditHabits() {
 
 export function useEditAbstains() {
     let user = GetUser()
+    let refreshUser = RefreshUserFunc()
+
     let [abstains, setAbstains] = useState<Activity[]>()
     useEffect(() => {
         setAbstains(user?.activities.filter((a: Activity) => a.activity_type == "abstain"))
@@ -130,6 +135,7 @@ export function useEditAbstains() {
     const handleSave = async (saveabstains : Activity[]) => {
         try {
             if (saveabstains) await upsertUserActivity(saveabstains)
+            refreshUser()
             // openNotification("Activity saved", "success")
         } catch (error) {
             let m = `something went wrong : ${error}`
