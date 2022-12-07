@@ -7,11 +7,11 @@ module.exports = {
       extend: {
         colors: {
           'primary': '#24C196',
+          'success': '#298683',
           'warn': '#9F7678',
           'div1': '#3B3D46',
           'div2': '#23242D',
           'card2': '#4A4E69',
-          'card3': '#298683',
           'card4': "#747687",
           'demph': '#CBCEEE',
           'demph2': '#A8AABC',

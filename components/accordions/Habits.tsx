@@ -9,8 +9,9 @@ import ToggleDays from "./ToggleDays"
 import { Activity } from "../../entities/Activity"
 import { useEditHabits } from "../../usecases/useEditActivities"
 import { useGetUser } from "../../usecases/useUser"
-import { Adder, HHAccordion } from "./Common"
+import { Adder, HHAccordion, PickFrequency, SuggestionAdd } from "./Common"
 import { accordionColor } from "../../utils/consts"
+import { useState } from "react"
 
 export function HabitAccordion() {
     return (
@@ -44,11 +45,12 @@ export function Body() {
     let { editHabits, habits, createNewHabit, handleDelete } =
         useEditHabits()
 
-    console.log("jhh , h",habits)
-
     return (
         <>
-            <Adder handleAdd={createNewHabit} />
+            <Adder handleAdd={() => createNewHabit("")} />
+            {!habits?.length && 
+                <SuggestionAdd handleSelect={(opt: any)=>createNewHabit(opt)} options={["Exercise 1 Hour", "Read 30 Minutes", ]} />
+            }
 
             <div className="space-y-4">
                 {habits?.map((m, i) => (
@@ -69,6 +71,7 @@ export function Body() {
 
 export function HabitForm({ onChange, onMinusPress, activity }: any) {
     let { user } = useGetUser()
+    let [days, setDays] = useState(activity.days)
     // let [activity, setActivity] = useState<Activity>(init)
 
     const handleTextUpdate = (e: any) => {
@@ -88,6 +91,7 @@ export function HabitForm({ onChange, onMinusPress, activity }: any) {
             days: values,
         }
         // setActivity(update)
+        setDays(values)
         onChange(update)
     }
 
@@ -111,7 +115,7 @@ export function HabitForm({ onChange, onMinusPress, activity }: any) {
                 onBlur={handleTextUpdate}
             />
 
-            <ToggleDays init={activity.days} onSelect={handleDaysUpdate} />
+            <PickFrequency {...{days, handleDaysUpdate}} />
         </div>
     )
 }

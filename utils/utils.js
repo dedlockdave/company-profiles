@@ -157,5 +157,3 @@ export function convertToChartData(object) {
 }
 
 export const percentFormat = (num) => `${numFormatter(num * 100)}%`
-
-

@@ -1,29 +1,23 @@
 import { FormControlLabel, Switch } from "@mui/material"
+import { HeatMapGrid } from "react-grid-heatmap"
+
 import TaskAltIcon from "@mui/icons-material/TaskAlt"
 import DoNotDisturbTwoToneIcon from "@mui/icons-material/DoNotDisturbTwoTone"
-import moment from "moment"
-import Link from "next/link"
-import { ActivityEntry } from "../../entities/ActivityEntry"
+
+import { ActivityCard } from "../../usecases/useMarkCompletion"
+import { ActivityEntry, ActivityReport } from "../../entities/ActivityEntry"
 
 import { useMarkCompletion } from "../../usecases/useMarkCompletion"
 import { motion, MotionProps } from "framer-motion"
+import moment from "moment"
+import { CircularProgressWithLabel } from "../CircularProgressLabel"
+import { Label } from "@mui/icons-material"
 
 export function MarkCompletion() {
     let { habits, abstains, handleToggleSet } = useMarkCompletion()
     return (
         <div className="">
-            <div className="mb-4">
-                <p className="m-0">Track your Commitments</p>
-                <Link href="/edit">
-                    <p className="m-0 font-bold underline text-sm text-demph ">
-                        Edit
-                    </p>
-                </Link>
-            </div>
             <div className="space-y-6">
-                <h3 className="text-center m-0">
-                    {moment().format("MMM Do YY")}
-                </h3>
                 <HabitsList {...{ habits, handleToggleSet }} />
                 <AbstainList {...{ abstains, handleToggleSet }} />
             </div>
@@ -31,6 +25,11 @@ export function MarkCompletion() {
     )
 }
 
+type EntryCardProps = {
+    entry: ActivityEntry
+    onToggle: (status: boolean) => void
+    key: string
+} & MotionProps
 
 function HabitsList({ habits, handleToggleSet }: any) {
     return (
@@ -43,14 +42,14 @@ function HabitsList({ habits, handleToggleSet }: any) {
             </div>
 
             <div className="space-y-4">
-                {habits?.map((entry: ActivityEntry) => {
+                {habits?.map((card: ActivityCard) => {
                     const onToggle = (status: boolean) =>
-                        handleToggleSet(entry.user_activities_id, status)
+                        handleToggleSet(card.entry.user_activities_id, status)
                     return (
                         <HabitEntry
-                            key={entry.user_activities_id}
-                            {...{ onToggle, entry }}
+                            {...{ onToggle, card }}
                             transition={{ type: "tween", stiffness: 160 }}
+                            key={card.entry.user_activities_id}
                         />
                     )
                 })}
@@ -59,26 +58,65 @@ function HabitsList({ habits, handleToggleSet }: any) {
     )
 }
 
-type EntryCardProps = {
-    entry: ActivityEntry
-    onToggle: (status: boolean) => void
-    key: string
-} & MotionProps
+function HabitEntry({ card, onToggle, ...motionProps }: any) {
+    let { entry, report } = card
 
-function HabitEntry({ entry, onToggle, ...motionProps }: any) {
-    let rows, bgColor, switchLabelColor, fontColor, label, height
+    let gridRows, bgColor, fontColor, label, height, switchLabelColor
 
     switchLabelColor = "#A8AABC"
     if (entry.completed) {
-        bgColor = "bg-card3"
-        // fontColor = "text-white"
+        bgColor = "bg-success"
         label = "Done"
         height = "h-18"
-        rows = "grid-rows-1"
+        gridRows = "grid-rows-1"
     } else {
+        gridRows = "grid-rows-[24%_76%]"
         bgColor = "bg-card4"
         label = "Mark Done"
+        height = "h-40"
+    }
+
+    return (
+        <motion.div
+            layout
+            {...motionProps}
+            className={`-mx-4 py-4 px-6 grid grid-cols-[64%_36%] ${gridRows} ${height} items-center shadow-themed ${bgColor}`}
+        >
+            <ActivityToggle
+                fontColor={fontColor}
+                activityName={entry.activityName}
+                completed={entry.completed}
+                onToggle={onToggle}
+                label={label}
+                switchLabelColor={switchLabelColor}
+            />
+
+            {!entry.completed &&
+                <div className="col-span-full">
+                    <SuccessReport report={report} />
+                </div>
+            }
+        </motion.div>
+    )
+}
+
+function AbstainEntry({ card, onToggle, ...motionProps }: any) {
+    let { entry, report } = card
+    console.log(report)
+
+    let rows, bgColor, switchLabelColor, fontColor, label, height
+    switchLabelColor = "#A8AABC"
+    if (entry.completed) {
+        // rows = "grid-rows-1"
+        // fontColor = "text-white"
+        bgColor = "bg-card2"
+        label = "Mark Cheat"
+        height = "h-40"
+    } else {
+        bgColor = "bg-warn"
+        label = "Cheated"
         // fontColor = "text-demph2"
+        // label = "Mark Done"
         height = "h-18"
     }
 
@@ -88,27 +126,19 @@ function HabitEntry({ entry, onToggle, ...motionProps }: any) {
             {...motionProps}
             className={`-mx-4 py-3 px-6 grid grid-cols-[64%_36%] ${height} items-center shadow-themed ${bgColor}`}
         >
-            <span className={`${fontColor}`}>
-                {entry.activtyName}
-            </span>
-
-            <FormControlLabel
-                control={
-                    <Switch
-                        className="justify-self-end"
-                        checked={entry.completed}
-                        onChange={() => onToggle(!entry.completed)}
-                    />
-                }
+            <ActivityToggle
+                fontColor={fontColor}
+                activityName={entry.activityName}
+                completed={entry.completed}
+                onToggle={onToggle}
                 label={label}
-                className="justify-self-end"
-                sx={{
-                    color: switchLabelColor,
-                    textAlign: "center",
-                    "& .MuiFormControlLabel-label": {fontSize: ".72em"}
-                }}
-                labelPlacement="bottom"
+                switchLabelColor={switchLabelColor}
             />
+            {entry.completed &&
+                <div className="col-span-full">
+                    <SuccessReport report={report} />
+                </div>
+            }
         </motion.div>
     )
 }
@@ -124,17 +154,13 @@ function AbstainList({ abstains, handleToggleSet }: any) {
             </div>
 
             <div className="space-y-4">
-                {abstains?.map((entry: ActivityEntry) => {
+                {abstains?.map((card: ActivityCard) => {
                     const onToggle = (status: boolean) =>
-                        handleToggleSet(entry.user_activities_id, status)
+                        handleToggleSet(card.entry.user_activities_id, status)
                     return (
                         <AbstainEntry
-                            key={entry.user_activities_id}
-                            {...{ onToggle, entry }}
-                            // positionTransition={{
-                            //     type: "tween",
-                            //     ease: "easeInOut",
-                            // }}
+                            key={card.entry.user_activities_id}
+                            {...{ onToggle, card }}
                             transition={{ type: "tween", stiffness: 160 }}
                         />
                     )
@@ -144,55 +170,96 @@ function AbstainList({ abstains, handleToggleSet }: any) {
     )
 }
 
+function SuccessReport({ report }: any) {
+    console.log(report)
+    if(!report?.data.length) return (
+        <p className="text-sm text-demph2 text-center">
+            Historical data will show up here
+        </p>
+    )
+    let showData = report.data.slice(-7) 
 
-function AbstainEntry({ entry, onToggle, ...motionProps }: any) {
-    let rows, bgColor, switchLabelColor, fontColor, label, height
-    switchLabelColor = "#A8AABC"
-    if (entry.completed) {
-        // rows = "grid-rows-1"
-        // fontColor = "text-white"
-        bgColor = "bg-card3"
-        label = "Mark Cheat"
-        height = "h-18"
+    let xLabels = showData.map((d : any)=> moment(d.entry_date).format("MMM Do"))
+    return (
+        <div className="grid grid-cols-[32%_68%] justify-between w-full">
+            <div className="mx-auto">
+                <CircularProgressWithLabel 
+                    value={report.ratio*100}
+                    sx={{
+                        '& .MuiTypography-root': {color: "#24C196"}
+                    }}
+                />
+                <p className="m-0 p-0 text-center text-xs text-demph2">
+                    Since <br /> 
+                    {moment(report.activity.created_time).format("MMM Do")}
+                </p>
+            </div>
+            <HeatMapGrid 
+                data={[showData]}
+                xLabels={xLabels} 
+                cellRender={(y, x, value) => <CompletionDataPoint {...{value}} />}
+                xLabelsStyle={() => ({
+                    margin: '5px',
+                    fontSize: ".48rem"
+                })}
+                cellStyle={() => ({
+                    borderRadius: '0',
+                    border: "1px solid #CBCEEE",
+                    margin: '.5px',
+                })}
+                cellHeight=".809rem"
+                xLabelsPos="bottom"
+            />
+        </div>
+    )
+}
+
+function CompletionDataPoint({value}: any) {
+    let color
+    if (moment(value.entry_date).isSame(new Date(), "day")) {
+        color = "transparent"
     } else {
-        bgColor = "bg-warn"
-        label = "Cheated"
-        // fontColor = "text-demph2"
-        // label = "Mark Done"
-        height = "h-18"
+        color = value.completed ? "bg-success" :  "bg-warn"
     }
 
     return (
-        <motion.div
-            layout
-            {...motionProps}
-            className={`-mx-4 py-3 px-6 grid grid-cols-[64%_36%] ${height} items-center shadow-themed ${bgColor}`}
-        >
-            <span className={`${fontColor}`}>
-                {entry.activtyName}
-            </span>
+        <div className={`w-full h-full ${color}`}  />
+    )
+
+}
+
+function ActivityToggle({
+    fontColor,
+    activityName,
+    completed,
+    onToggle,
+    label,
+    switchLabelColor,
+}: any) {
+    return (
+        <>
+            <span className={`${fontColor}`}>{activityName}</span>
 
             <FormControlLabel
                 control={
                     <Switch
                         className="justify-self-end"
-                        checked={entry.completed}
-                        onChange={() => onToggle(!entry.completed)}
+                        checked={completed}
+                        onChange={() => onToggle(!completed)}
                     />
                 }
                 label={label}
-                className="justify-self-end"
+                className="justify-self-end items-center"
                 sx={{
-                    color: switchLabelColor,
+                    // color: switchLabelColor,
                     textAlign: "center",
-                    "& .MuiFormControlLabel-label": {fontSize: ".72em"}
+                    "& .MuiFormControlLabel-label": { fontSize: ".72em" },
                 }}
                 labelPlacement="bottom"
             />
-        </motion.div>
+        </>
     )
 }
-
 
 // function CompletedCard({ entry, onToggle }: any) {
 //     if (!entry || !entry.completed) {

@@ -1,7 +1,7 @@
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { Activity, fetchUserActivities } from "../entities/Activity"
-import { ActivityEntry, getActivityEntries } from "../entities/ActivityEntry"
+import { ActivityEntry, ActivityReport, fetchActivityEntriesByDate, getSuccessReport } from "../entities/ActivityEntry"
 
 
 export function UserActivities(userID : string){
@@ -28,7 +28,7 @@ export function UserActivitiesEntries(userID : string, createdTime : moment.Mome
 
     useEffect(() => {
         async function fetchActivities() {
-            let c =  await getActivityEntries(userID, createdTime)
+            let c =  await fetchActivityEntriesByDate(userID, createdTime)
             setActivitiesEntries(c)
         }
         if (userID && createdTime) {
@@ -40,4 +40,34 @@ export function UserActivitiesEntries(userID : string, createdTime : moment.Mome
         activitiesEntries,
         setActivitiesEntries
     }
+}
+
+
+export function SuccessReports(userID : string ,activities: Activity[]) {
+    let [reports, setReports] = useState<ActivityReport[]>()
+
+    useEffect(() => {
+        async function fetchAndSet() { 
+            if (!userID || !activities?.length) return
+            setReports(
+                await getSuccessReport(userID, activities))
+        }
+
+        fetchAndSet()
+    }, [activities, userID])
+
+    return {
+        reports
+    }
+
+    // useEffect(() => {
+    //     async function fetchActivities() {
+    //         let c =  await fetchActivityEntriesByDate(userID, createdTime)
+    //         setActivitiesEntries(c)
+    //     }
+    //     if (userID && createdTime) {
+    //         fetchActivities()
+    //     }
+    // }, [userID, createdTime])
+
 }

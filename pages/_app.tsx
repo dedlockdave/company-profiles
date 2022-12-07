@@ -56,7 +56,7 @@ export default function App({
                     </UserProvider>
                 </ThemeProvider>
             </SessionProvider>
-            <Script id="scriptmeupfuk" strategy="lazyOnload">
+            {/* <Script id="scriptmeupfuk" strategy="lazyOnload">
                 {`
                                     window.fbAsyncInit = function() {
                                       FB.init({
@@ -78,7 +78,7 @@ export default function App({
                                        fjs.parentNode.insertBefore(js, fjs);
                                      }(document, 'script', 'facebook-jssdk'));
                                 `}
-            </Script>
+            </Script> */}
         </>
     )
 }

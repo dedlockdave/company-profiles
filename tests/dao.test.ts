@@ -1,24 +1,54 @@
-import {describe, expect, test} from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { fail } from 'assert';
-import { Activity, getUserCommitments, upsertUserActivity } from '../entities/Activity';
+import moment from 'moment';
+import { Activity, upsertUserActivity, fetchUserActivities } from '../entities/Activity';
+import { ActivityEntry, createEntry, getSuccessReport, insertUserActivityEntries } from '../entities/ActivityEntry';
+import { isRelevant } from '../utils/date';
+import {v4 as uuidv4} from 'uuid';
 
 const uid = 'd2b790a3-dc85-4aa1-8a8c-4e425eeb1c1a'
 
 test('integration', async () => {
-  console.log("yessir")
   try {
     let as = [
-      {user_id: uid, name: "activity1", days: [1, 1, 1, 1, 1, 1, 1]},
-      {user_id: uid, name: "mf thing ", days: [1, 0, 0, 0, 1, 0, 0]}
-     ] as Activity[]
-     await upsertUserActivity(as)
-
-     let ae = [
-      {}
-     ]
-  } catch (error) {    
-    fail(error as string)
+      { user_id: uid, name: "habit1", days: [1, 1, 1, 1, 1, 1, 1], activity_type: "habit" },
+      { user_id: uid, name: "abstain1", days: [1, 0, 0, 0, 1, 0, 0], activity_type: "abstain" }
+    ] as Activity[]
+    await upsertUserActivity(as)
+  } catch (error) {
+    // console.log("upsert failed most likely data already exists")
+    
   }
+
+  let activities = await fetchUserActivities(uid)
+  
+  let activityEntries : ActivityEntry[] = []
+  
+  for (let an=0;an<activities.length;an++) {
+    let curr = moment().startOf('day')
+    let activity = activities[an]
+    
+    for (let i = 0; i < 10; i++) {
+      curr.subtract(1, "days")
+      if (!isRelevant(curr, activity.days)) continue
+
+      let completed = i != 5 ? true : false
+      let ae = createEntry(activity, completed, curr.clone())
+      activityEntries.push(ae)
+    }
+  }
+
+  try {
+    insertUserActivityEntries(activityEntries)
+  } catch (error) {
+    fail(error as string)    
+  }
+})
+
+test('successReport', async () => {
+  let data = await getSuccessReport(uid)
+  console.log(data)
+  
 })
 
 

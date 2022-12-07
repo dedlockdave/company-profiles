@@ -79,10 +79,11 @@ const toggleButtonStyles = {
     },
 }
 
-const ToggleDays = ({onSelect, init}) => {
-    const [days, setDays] = useState(translateDays(init))
+const ToggleDays = ({onSelect, days}) => {
+    if (!days?.length) return null
+    // const [days, setDays] = useState(translateDays(days))
     const handleSelect = (event, values) => {
-        setDays(values)
+        // setDays(values)
         let out = [0, 0, 0, 0, 0, 0, 0].map((v, i) => {
             if (values.includes(i)) return 1
             return 0
@@ -92,11 +93,10 @@ const ToggleDays = ({onSelect, init}) => {
 
     return (
         <>
-            <p className="text-xs mb-0">How Often?</p>
             <ToggleButtonGroup
                 size="small"
                 arial-label="Days of the week"
-                value={days}
+                value={translateDays(days)}
                 onChange={handleSelect}
                 sx={toggleButtonGroupStyles}
             >
@@ -115,7 +115,7 @@ const ToggleDays = ({onSelect, init}) => {
     )
 }
 
-const translateDays = (currentDays) => {
+export const translateDays = (currentDays) => {
     let out = []
     currentDays.forEach((v, i) => {
         if (v== 1) out.push(i)

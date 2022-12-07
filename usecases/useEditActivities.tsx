@@ -4,7 +4,7 @@ import { deleteUserActivity, upsertUserActivity } from "../entities/Activity"
 import {sleep} from '../utils/utils'
 
 import { Activity } from "../entities/Activity"
-import {UserActivities} from "./common"
+import {UserActivities} from "./useData"
 
 export function activitiyProvider() {
     let user = GetUser()
@@ -28,8 +28,8 @@ export function useEditHabits() {
         setHabits(user?.activities.filter((a: Activity) => a.activity_type == "habit"))
     }, [user])
 
-    const createNewHabit = () => {
-        let newHabit = new Activity()
+    const createNewHabit = (name="") => {
+        let newHabit = new Activity({name})
         newHabit.activity_type = "habit"
         let a = [newHabit]
         if (habits?.length) a.push(...habits)
@@ -100,8 +100,8 @@ export function useEditAbstains() {
         setAbstains(user?.activities.filter((a: Activity) => a.activity_type == "abstain"))
     }, [user])
 
-    const createNewAbstain = () => {
-        let newAbstain = new Activity()
+    const createNewAbstain = (name="") => {
+        let newAbstain = new Activity({name})
         newAbstain.activity_type = "abstain"
         let a = [newAbstain]
         if (abstains?.length) a.push(...abstains)

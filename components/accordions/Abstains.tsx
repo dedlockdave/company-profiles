@@ -4,30 +4,25 @@ import {
     TextField,
 } from "@mui/material"
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined"
-import ToggleDays from "./ToggleDays"
 
 import { Activity } from "../../entities/Activity"
-import { useEditAbstais } from "../../usecases/useEditAbstainss"
 import { useGetUser } from "../../usecases/useUser"
-import { Adder, HHAccordion } from "./Common"
+import { Adder, HHAccordion, PickFrequency, SuggestionAdd } from "./Common"
 import { accordionColor } from "../../utils/consts"
 import { useEditAbstains } from "../../usecases/useEditActivities"
+import { useState } from "react"
 
 export function AbstainsAccordion() {
     return (
-        <Accordion
-                style={{ backgroundColor: accordionColor }}
-                defaultExpanded
-            >
-                <HHAccordion>
-                    <Header />
-                </HHAccordion>
+        <Accordion style={{ backgroundColor: accordionColor }} defaultExpanded>
+            <HHAccordion>
+                <Header />
+            </HHAccordion>
 
-                <AccordionDetails>
-                    <Body />
-                </AccordionDetails>
-            </Accordion>
-
+            <AccordionDetails>
+                <Body />
+            </AccordionDetails>
+        </Accordion>
     )
 }
 
@@ -37,7 +32,9 @@ export function Header() {
             <div className="">
                 <span className="mr-16">Abstains</span>
             </div>
-            <span className="text-xs text-demph2">Things you want to do</span>
+            <span className="text-xs text-demph2">
+                Things you want to avoid
+            </span>
         </div>
     )
 }
@@ -48,7 +45,11 @@ export function Body() {
 
     return (
         <>
-            <Adder handleAdd={createNewAbstain} />
+
+            <Adder handleAdd={()=>createNewAbstain("")} />
+            {!abstains?.length && 
+                <SuggestionAdd handleSelect={(opt: any)=>createNewAbstain(opt)} options={["Sweets", "Alcohol", "Marijuana"]} />
+            }
 
             <div className="space-y-4">
                 {abstains?.map((m, i) => (
@@ -67,8 +68,10 @@ export function Body() {
     )
 }
 
+
 export function AbstainsForm({ onChange, onMinusPress, activity }: any) {
     let { user } = useGetUser()
+    let [days, setDays] = useState(activity.days)
     // let [activity, setActivity] = useState<Activity>(init)
 
     const handleTextUpdate = (e: any) => {
@@ -87,7 +90,7 @@ export function AbstainsForm({ onChange, onMinusPress, activity }: any) {
             user_id: user.userID,
             days: values,
         }
-        // setActivity(update)
+        setDays(values)
         onChange(update)
     }
 
@@ -106,12 +109,13 @@ export function AbstainsForm({ onChange, onMinusPress, activity }: any) {
                 required
                 className="w-full"
                 id="standard-required"
-                label="Goal"
+                label="What you want to avoid"
                 defaultValue={activity.name}
                 onBlur={handleTextUpdate}
             />
 
-            <ToggleDays init={activity.days} onSelect={handleDaysUpdate} />
+            <PickFrequency days={days} handleDaysUpdate={handleDaysUpdate} />
         </div>
     )
 }
+
