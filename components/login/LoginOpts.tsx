@@ -41,7 +41,7 @@ export default function LoginOpts() {
 }
 
 async function signUp(providerId: string) {
-    supabase.auth.signInWithSSO({options: {redirectTo: "http://localhost:3000"}, providerId})
+    supabase.auth.signInWithSSO({options: {redirectTo: process.env.NEXT_PUBLIC_REDIRECT}, providerId})
 
     // const { error } = await supabase.auth.signIn(
         
@@ -55,7 +55,7 @@ function LoginOption({ loginType }: any) {
     const handleSignIn = async (loginType: any) => {
         supabase.auth.signInWithOAuth({
             provider: loginType.toLowerCase(),
-            // options: {redirectTo: "http://localhost:3000"}
+            // options: {redirectTo: process.env.NEXT_PUBLIC_REDIRECT}
         })
         const { error } = await supabase.auth.signInWithOAuth(
             {
